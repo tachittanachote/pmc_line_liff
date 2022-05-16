@@ -1,25 +1,44 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+} from "react-router-dom";
+import { UserProvider } from './context/UserContext';
+import Home from './pages/Home';
+import OrderList from './pages/OrderList';
+import Orders from './pages/Orders';
+import OrderTimeline from './pages/OrderTimeline';
+import Profile from './pages/Profile';
+import Promotions from './pages/Promotions';
+import Login from './pages/Login';
+import Welcome from './pages/Welcome';
+import OrderTrack from './pages/OrderTrack';
+import RequireAuth from './components/RequireAuth';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+  render() {
+
+    return (
+      
+        <Router>
+            <UserProvider>
+              <Switch>
+                <Route exact path="/login" component={Login} />
+                <Route exact path="/" component={RequireAuth(Home)} />
+                <Route exact path="/promotions" component={RequireAuth(Promotions)} />
+                <Route exact path="/orders" component={RequireAuth(Orders)} />
+                <Route exact path="/orders/:order_id" component={RequireAuth(OrderList)} />
+                <Route exact path="/orders/:order_id/track" component={RequireAuth(OrderTimeline)} />
+                <Route exact path="/profile" component={RequireAuth(Profile)} />
+                <Route exact path="/welcome" component={RequireAuth(Welcome)} />
+                <Route exact path="/order-track" component={RequireAuth(OrderTrack)} />
+              </Switch>
+          </UserProvider>
+        </Router>
+      
+    )
+  }
 }
 
 export default App;
